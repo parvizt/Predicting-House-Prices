@@ -6,20 +6,20 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 from sklearn.impute import SimpleImputer
 
-# خواندن داده‌ها از فایل
+# Reading data from the file
 df = pd.read_csv('housebroker.csv')
 
-# تبدیل مقادیر بله و خیر به ۱ و ۰
+# Converting 'TRUE' and 'FALSE' values to 1 and 0
 df['Elevator'] = df['Elevator'].apply(lambda x: 1 if x == 'TRUE' else 0)
 df['Parking'] = df['Parking'].apply(lambda x: 1 if x == 'TRUE' else 0)
 df['Warehouse'] = df['Warehouse'].apply(lambda x: 1 if x == 'TRUE' else 0)
 
-# جایگزینی مقادیر NaN با میانگین ستون
+# Replacing NaN values with column mean
 imputer = SimpleImputer(strategy='mean')
 df = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
 
 def predict_price():
-    # استخراج ویژگی‌ها از ورودی‌های کاربر
+    # Extracting features from user inputs
     elevator = elevator_var.get()
     floor = int(floor_var.get())
     area = int(area_var.get())
@@ -28,12 +28,12 @@ def predict_price():
     warehouse = warehouse_var.get()
     year_of_construction = int(year_var.get())
 
-    # تبدیل مقادیر بله و خیر به ۱ و ۰
+    # Converting 'TRUE' and 'FALSE' values to 1 and 0
     elevator = 1 if elevator == 'TRUE' else 0
     parking = 1 if parking == 'TRUE' else 0
     warehouse = 1 if warehouse == 'TRUE' else 0
 
-    # ایجاد یک داده‌فریم جدید بر اساس ورودی‌های کاربر
+    # Creating a new DataFrame based on user inputs
     input_data = pd.DataFrame({
         'Elevator': [elevator],
         'Floor': [floor],
@@ -44,75 +44,72 @@ def predict_price():
         'YearOfConstruction': [year_of_construction]
     })
 
-    # تقسیم داده به داده آموزشی و تست
+    # Splitting data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(df.drop('Price', axis=1), df['Price'], test_size=0.2, random_state=42)
 
-    # استفاده از یک مدل خطی
+    # Using a Linear Regression model
     model = LinearRegression()
     model.fit(X_train, y_train)
 
-    # پیش‌بینی قیمت
+    # Predicting the price
     predicted_price = model.predict(input_data)
 
-    # نمایش نتیجه به کاربر
-    result_label.config(text=f"پیش‌بینی قیمت: {predicted_price[0]:,.0f} تومان")
+    # Displaying the result to the user
+    result_label.config(text=f"Predicted Price: {predicted_price[0]:,.0f} Tomans")
 
-    # محاسبه خطا
+    # Calculating the error
     y_pred = model.predict(X_test)
     mae = mean_absolute_error(y_test, y_pred)
     error_percentage = (mae / df['Price'].mean()) * 100
-    error_label.config(text=f"میانگین خطا: {error_percentage:.2f}%")
+    error_label.config(text=f"Average Error: {error_percentage:.2f}%")
 
-
-# ساخت رابط کاربری
+# Creating the user interface
 root = tk.Tk()
-root.title("Regression model:House Price Estimation")
+root.title("Regression Model: House Price Estimation")
 
-# ایجاد ویدجت‌ها و لیبل‌ها
-elevator_label = ttk.Label(root, text="آسانسور:")
+# Creating widgets and labels
+elevator_label = ttk.Label(root, text="Elevator:")
 elevator_var = ttk.Combobox(root, values=['TRUE', 'FALSE'])
 elevator_var.set('TRUE')
 
-floor_label = ttk.Label(root, text="طبقه:")
+floor_label = ttk.Label(root, text="Floor:")
 floor_var = ttk.Combobox(root, values=['-1', '0', '1', '2', '3', '4', '5',
-                                              '6', '7', '8', '9', '10',
-                                              '11', '12', '13', '14', '15',
-                                              '16', '`17', '18', '19', '20',
-                                               '21', '22', '23', '24', '25',
-                                               '26', '27', '28', '29', '30'])
-
+                                      '6', '7', '8', '9', '10',
+                                      '11', '12', '13', '14', '15',
+                                      '16', '`17', '18', '19', '20',
+                                      '21', '22', '23', '24', '25',
+                                      '26', '27', '28', '29', '30'])
 floor_var.set('1')
 
-area_label = ttk.Label(root, text="مساحت:")
+area_label = ttk.Label(root, text="Area:")
 area_var = ttk.Combobox(root, values=[str(i) for i in range(3, 355)])
 area_var.set('100')
 
-parking_label = ttk.Label(root, text="پارکینگ:")
+parking_label = ttk.Label(root, text="Parking:")
 parking_var = ttk.Combobox(root, values=['TRUE', 'FALSE'])
 parking_var.set('TRUE')
 
-room_label = ttk.Label(root, text="تعداد اتاق:")
+room_label = ttk.Label(root, text="Number of Rooms:")
 room_var = ttk.Combobox(root, values=['1', '2', '3', '4'])
 room_var.set('2')
 
-warehouse_label = ttk.Label(root, text="انبار:")
+warehouse_label = ttk.Label(root, text="Warehouse:")
 warehouse_var = ttk.Combobox(root, values=['TRUE', 'FALSE'])
 warehouse_var.set('TRUE')
 
-year_label = ttk.Label(root, text="سال ساخت:")
-year_var = ttk.Combobox(root, values=['1375','1376','1377','1378','1379','1380','1381',
-                                      '1382','1383','1384','1385','1386','1387','1388',
-                                       '1389','1390','1391','1392','1393','1394','1395',
+year_label = ttk.Label(root, text="Year of Construction:")
+year_var = ttk.Combobox(root, values=['1375', '1376', '1377', '1378', '1379', '1380', '1381',
+                                      '1382', '1383', '1384', '1385', '1386', '1387', '1388',
+                                      '1389', '1390', '1391', '1392', '1393', '1394', '1395',
                                       '1396', '1397', '1398', '1399', '1400', '1401'])
-
 year_var.set('1398')
 
-predict_button = ttk.Button(root, text="پیش‌بینی قیمت", command=predict_price)
+predict_button = ttk.Button(root, text="Predict Price", command=predict_price)
 
-result_label = ttk.Label(root, text="پیش‌بینی قیمت: -")
-error_label = ttk.Label(root, text="میانگین خطا: -")
+result_label = ttk.Label(root, text="Predicted Price: -")
+error_label = ttk.Label(root, text="Average Error: -")
 
-# نمایش ویدجت‌ها در یک grid
+# Displaying widgets in a grid
 elevator_label.grid(row=0, column=0, padx=10, pady=5)
 elevator_var.grid(row=0, column=1, padx=10, pady=5)
 
@@ -139,6 +136,5 @@ predict_button.grid(row=7, column=0, columnspan=2, pady=10)
 result_label.grid(row=8, column=0, columnspan=2, pady=5)
 error_label.grid(row=9, column=0, columnspan=2, pady=5)
 
-
-# اجرای mainloop
+# Running the mainloop
 root.mainloop()
