@@ -22,4 +22,17 @@ I'll upload the codes on GitHub. You can add a user interface to it and integrat
 
 Here's the CSV file that is read and analyzed. You need to include it along with the Python files in your main project.
 
+![image](https://github.com/parvizt/Predicting-House-Prices/assets/40644514/89535a27-8b7e-4524-ac2e-8bafcb507d20)
+
+![image](https://github.com/parvizt/Predicting-House-Prices/assets/40644514/a5fae2b9-11cf-43d7-bbdd-347bf9760570)
+
+![image](https://github.com/parvizt/Predicting-House-Prices/assets/40644514/2c083c13-5a77-4c48-8caf-8c2513cf2fed)
+
+![image](https://github.com/parvizt/Predicting-House-Prices/assets/40644514/386365ac-41ac-4a58-9165-77b8210c7f84)
+
+![image](https://github.com/parvizt/Predicting-House-Prices/assets/40644514/12164647-fe5c-44f7-bb8d-d75c650c3c62)
+
+
+
+
 
